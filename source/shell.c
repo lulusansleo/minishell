@@ -10,6 +10,18 @@
 
 int main(int ac, char **av, char **env);
 
+void print_env(env_t *head)
+{
+    env_t *tmp = head;
+    while (tmp != NULL) {
+        my_putstr(tmp->name);
+        my_putchar('=');
+        my_putstr(tmp->value);
+        my_putchar('\n');
+        tmp = tmp->next;
+    }
+}
+
 int get_list_size(env_t *head)
 {
     env_t *tmp = head;

@@ -36,14 +36,21 @@ int execute(char **args, char **paths, char **env)
     int status = 0;
     __pid_t pid = fork();
     if (pid == 0) {
-        execute_command(command_path, args, env);
+        status = execute_command(command_path, args, env);
         free(command_path);
-        exit(0);
+        exit(EXIT_FAILURE);
+    } else {
+        status = 0;
+        if (waitpid(pid, &status, 0) == -1) {
+            perror("Failed to wait for child process");
+            return -1;
+        }
+        if (WIFEXITED(status))
+            return WEXITSTATUS(status);
+        if (WIFSIGNALED(status))
+            return 128 + WTERMSIG(status);
     }
-    waitpid(pid, &status, 0);
-    status = WIFEXITED(status) ? WEXITSTATUS(status) : status;
-    free(command_path);
-    return status;
+    return WIFEXITED(status) ? WEXITSTATUS(status) : status;
 }
 
 int run_shell_loop(env_t *head, char **paths, char **env)
@@ -51,15 +58,14 @@ int run_shell_loop(env_t *head, char **paths, char **env)
     char *line, **args;
     int status = 0;
     while (1) {
-        print_prompt();
         line = get_input();
         if (!line)
             break;
         if (line[0] == '\0')
             continue;
         args = parse_args(line);
-        if (my_strcmp(args[0], "/cd") == 0) {
-            my_cd(args, head);
+        if (is_builtin(args[0]) == 1) {
+            status = builtin(args, &head);
             free(line);
             continue;
         }

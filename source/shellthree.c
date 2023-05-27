@@ -37,15 +37,12 @@ char *get_command_path(char **paths, char *command)
     return NULL;
 }
 
-void execute_command(char *command_path, char **args, char **env)
+int execute_command(char *command_path, char **args, char **env)
 {
-    if (execve(command_path, args, env) == -1) {
-        my_putstr("Error: Failed to execute command.\n");
+    int status;
+    if ((status = execve(command_path, args, env)) == -1) {
+        my_printf("%s: Command not found.\n", args[0]);
         exit(EXIT_FAILURE);
     }
-}
-
-void print_prompt(void)
-{
-    my_printf("$>");
+return status;
 }

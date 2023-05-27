@@ -10,7 +10,7 @@
 
 static bool is_not_delim(char c, char delim)
 {
-    if (c == delim)
+    if (c == delim || c == '\t')
         return false;
     return true;
 }

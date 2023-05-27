@@ -12,6 +12,7 @@ SRC			=	source/shell.c \
 				source/shelltwo.c \
 				source/shellthree.c \
 				source/builtin.c \
+				source/builtin_env.c \
 
 SRC_MAIN	=	source/main.c
 

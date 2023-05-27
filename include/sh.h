@@ -11,6 +11,7 @@
     #include <stdio.h>
     #include <stdlib.h>
     #include <sys/wait.h>
+    #include <signal.h>
 
     typedef struct env {
             char *name;
@@ -18,6 +19,7 @@
             struct env *next;
     } env_t;
 
+    env_t *add_env_node(env_t *head, char *env);
     //frees env struct
     void free_env(env_t *head);
     //stores env in struct
@@ -31,7 +33,7 @@
     //run shell loop
     int run_shell_loop(env_t *head, char **paths, char **env);
 
-    void execute_command(char *command_path, char **args, char **env);
+    int execute_command(char *command_path, char **args, char **env);
 
     void print_prompt(void);
 
@@ -46,5 +48,7 @@
     env_t *get_env_data(env_t *env, char *var);
 
     int get_list_size(env_t *head);
+
+    void print_env(env_t *head);
 
 #endif /* !SH_H */
