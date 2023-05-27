@@ -63,16 +63,27 @@ int run_shell_loop(env_t *head, char **paths, char **env)
             break;
         if (line[0] == '\0')
             continue;
-        args = parse_args(line);
+        status = shell_loop_second_part(line, &head, status, paths);
+    }
+    return status;
+}
+
+int shell_loop_second_part(char *line, env_t **head, char **env, char **paths)
+{
+    int status = 0;
+    char **arg = my_str_to_word_array_sep(line, ';');
+    char **args;
+    for (int i = 0; arg[i] != NULL; i++) {
+        args = parse_args(arg[i]);
         if (is_builtin(args[0]) == 1) {
-            status = builtin(args, &head);
-            free(line);
+            status = builtin(args, head);
             continue;
         }
-        env = get_env_from_struct(head);
+        env = get_env_from_struct(*head);
         status = execute(args, paths, env);
-        free_array(args, line);
+        free_array(args);
     }
+    free(line);
     return status;
 }
 

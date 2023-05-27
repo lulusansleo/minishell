@@ -77,11 +77,11 @@ build:	$(OBJ)
 	cp $(LIBNAME) ../
 
 clean:
-	rm -f $(OBJ)
+	$(RM) -f $(OBJ)
 
 fclean:	clean
-	rm -f $(LIBNAME)
-	rm ../$(LIBNAME)
+	$(RM) -f $(LIBNAME)
+	$(RM) ../$(LIBNAME)
 
 re:	fclean all
 

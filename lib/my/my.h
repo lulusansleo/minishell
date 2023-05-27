@@ -159,5 +159,5 @@
     int scientific_notation_big_g(double nb, int pow);
     int wrapper_put_big_g(va_list ap, check_flags_t *flags);
     int wrapper_put_g(va_list ap, check_flags_t *flags);
-    void free_array(char **array, char *line);
+    void free_array(char **array);
 #endif /* !myh */
