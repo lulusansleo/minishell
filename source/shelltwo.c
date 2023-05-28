@@ -86,16 +86,3 @@ int shell_loop_second_part(char *line, env_t **head, char **env, char **paths)
     free(line);
     return status;
 }
-
-char *get_input(void)
-{
-    char *line = NULL;
-    size_t len = 0;
-
-    if (getline(&line, &len, stdin) == -1) {
-        free(line);
-        return NULL;
-    }
-    line[my_strlen(line) - 1] = '\0';
-    return line;
-}

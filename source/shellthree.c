@@ -46,3 +46,16 @@ int execute_command(char *command_path, char **args, char **env)
     }
 return status;
 }
+
+char *get_input(void)
+{
+    char *line = NULL;
+    size_t len = 0;
+
+    if (getline(&line, &len, stdin) == -1) {
+        free(line);
+        return NULL;
+    }
+    line[my_strlen(line) - 1] = '\0';
+    return line;
+}
